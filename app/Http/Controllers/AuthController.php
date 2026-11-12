@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class AuthController extends Controller
 {
@@ -11,20 +13,27 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function login()
+    public function login(Request $request)
     {
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required'
-        ])->onlyInput('email');
+        ]);
 
-        if (Auth::attempt($credetials)) {
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
             return redirect()->intended('/barangs')->with('success', 'Berhasil login!');
         }
+
+        return back()->withErrors([
+            'email' => 'email atau passwrod salah',
+        ])->onlyInput('email');
+
     }
 
     public function logout(Request $request)
     {
+        Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/login')->with('success', 'Berhasil logout!');

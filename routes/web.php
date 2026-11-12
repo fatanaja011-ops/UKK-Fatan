@@ -7,17 +7,17 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\TransaksiBarangController;
 use App\Http\Controllers\DashboardController;
 
-Route::redirect('/', '/login');
+Route::redirect('/', '/dashboard');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Route::middleware(['POST'])->redirect(function () {
+Route::middleware(['auth'])->group(function () {
 
-//     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-//     Route::resource('barang', BarangController::class);
-//     Route::resource('kategori', KategoriController::class);
-//     Route::resource('transaksi-barang', TransaksBarangController::class);
+    Route::resource('barangs', BarangController::class);
+    Route::resource('kategoris', KategoriController::class);
+    Route::resource('transaksi-barangs', TransaksBarangController::class);
 
-// });
+});

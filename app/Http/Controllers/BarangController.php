@@ -58,7 +58,7 @@ class BarangController extends Controller
     public function destroy(Barang $barang)
     {
         $barang->delete();
-        Return redirect()->route('barang.index')->with('success', 'Barang berhasil dihapus!');
+        return redirect()->route('barang.index')->with('success', 'Barang berhasil dihapus!');
     }
 
     //5. Untuk menampilkan laporan barang

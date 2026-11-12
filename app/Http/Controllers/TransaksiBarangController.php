@@ -11,15 +11,15 @@ class TransaksiBarangController extends Controller
     //1. Untuk menampilkan daftar transaksi
     public function index()
     {
-        $transaksi = TransaskiBarang::with('barang')->get();
-        return view('transaksi-barang.index', compact('transaksis'));
+        $transaksis = TransaskiBarang::with('barang')->latest()->first();
+        return view('transaksi-barangs.index', compact('transaksis'));
     }
 
     //2. Untuk menampilkan form tambah transaksi
     public function create()
     {
         $barangs = Barang::all();
-        return view('transaksi-barang.create', compact('barangs'));
+        return view('transaksi-barangs.create', compact('barangs'));
     }
 
     //3. Untuk memvalidasi dan menyimpnan data transaksi baru
@@ -40,9 +40,9 @@ class TransaksiBarangController extends Controller
         TransaksiBarang::create($request->all());
 
         if ($request->jenis == 'Masuk') {
-            return $barangs->increment('stok');
+            $barangs->increment('stok', $request->jumlah);
         } else {
-            return $barangs->decrement('stok');
+            $barangs->decrement('stok', $request->jumlah);
         }
 
         return redirect()->routes('transaksi-barang.index')->with('success', 'transaksi barus berhasil ditambahkan!');

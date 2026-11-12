@@ -10,7 +10,7 @@ class KategoriController extends Controller
     //1. Untuk menampilkan daftar kategori
     public function index()
     {
-        $kategori = Kategori::all();
+        $kategoris = Kategori::all();
         return view('kategori.index', compact('kategoris'));
     }
 
@@ -53,6 +53,6 @@ class KategoriController extends Controller
     public function destroy(Kategori $kategori)
     {
         $kategori->delete();
-        return redirect()->routes('kategori.index')->with('success', 'Kategori berhasil dihapus!');
+        return redirect()->routes('kategoris.index')->with('success', 'Kategori berhasil dihapus!');
     }
 }
